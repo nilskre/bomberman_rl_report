@@ -1,0 +1,36 @@
+# Visual Studio Code
+.vscode/*
+
+# PyCharm
+.idea/
+
+# virtualenv files
+.venv/
+
+# Python specific
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.coverage
+.env
+
+# Mac DS_Store files
+.DS_Store
+
+**/.ipynb_checkpoints
+
+# latex
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+**/__latexindent_temp.tex
+*.run.xml
+*.synctex.gz
+
