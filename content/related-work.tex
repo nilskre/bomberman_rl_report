@@ -37,8 +37,12 @@ and measures the importance of each action. The special aggregating layer uses \
 	Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + (A(s, a; \theta, \alpha) - \frac{1}{\abs{A}} \sum_{a'}A(s, a'; \theta, \alpha)) 
 \end{equation}
 
-Using the dueling architecture approach an agent can learn which states are valuable independently of each action, which is esspecially useful in case actions do not influence the environment in any useful way. This leads to a better policy evaluation in the presence of many similar-valued actions. Also when looking at the last layer of a conventional DQN (see \autoref{fig:duelingDQN}) it usually becomes much more sparse and biased. As the state value is modeled as a single neuron in the dueling architecture, learning the state value function becomes much more efficient.
+Using the dueling architecture approach an agent can learn which states are valuable independently of each action, which is esspecially useful in case actions do not influence the environment in any useful way. This leads to a better and more robust policy evaluation in the presence of many similar-valued actions. Also when looking at the last layer of a conventional DQN (see \autoref{fig:duelingDQN}) it usually becomes much more sparse and biased. As the state value is modeled as a single neuron in the dueling architecture, learning the state value function becomes much more efficient. 
+
+Obviously, approaches exist that combine double Deep-Q-Learning with dueling architectures like \cite{Huang2018}. 
 
 % TODO: Prioritized replay buffer
 
 There are several other improvements mentioned in the rainbow paper \cite{Hessel2017} like multi-step learning, distributional reinforcement learning and noisy nets, but these are out of the scope for this small research project. 
+
+% TODO: Papers regarding bomberman task
