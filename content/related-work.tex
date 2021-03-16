@@ -1,3 +1,11 @@
-\section{Related Work} \label{related_work}
+\section{Fundamentals and Related Work} \label{fundamentals_related_work}
 
-\cite{grootkormelinkExplorationMethodsConnectionist2018}
+Q-Learning is a known off-policy and model-free approach to train an agent based on temporal difference in an environment that can be modeled as a Markov Decision Process (MDP). An agent therefore does not necessarily use the policy it is trained for and does not know the transition probabilities and rewards in the MDP beforehand. \autoref{QLearning} shows the interative update formula for the Q-values that an online model uses to choose the right action.
+
+\begin{equation} \label{QLearning}
+	Q_{k+1}(s,a) = (1-\alpha) Q_k(s,a) + \alpha(r + \gamma \max_{a'} Q_k(s',a')) 
+\end{equation}
+
+The problem with conventional Q-Learning is that in most of the cases the state dimension is far too high to explore and model the MDP entirely in foreseeable future. To deal with this problem the Q-values need to be approximated using a regression model. Deep neural networks have proven to be highly applicable for this task, which leads to the term of \textit{Deep-Q-Learning} and respectively \textit{Deep-Q-Networks} (DQN) for such network architectures. DQNs use the vectorized numerical state as its input and outputs the predicted Q-values. It learns through backpropagating the temporal difference error over each step. In the following papers regarding DQN architectures shall be introduced as well as papers dealing with the bomberman environment for reinforcement learning. 
+
+Paper \cite{vanHasselt2015} introduces ...
