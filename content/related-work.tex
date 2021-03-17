@@ -6,7 +6,7 @@ Q-Learning is a known off-policy and model-free approach to train an agent based
 	Q_{k+1}(s,a) = (1-\alpha) Q_k(s,a) + \alpha(r + \gamma \max_{a'} Q_k(s',a')) 
 \end{equation}
 
-The problem with conventional Q-Learning is that in most of the cases the state dimension is far too high to explore and model the MDP entirely in foreseeable future. To deal with this problem the Q-values need to be approximated using a regression model. Deep neural networks have proven to be highly applicable for this task, which leads to the term of \textit{Deep-Q-Learning} and respectively \textit{Deep-Q-Networks} (DQN) for such network architectures. DQNs use the vectorized numerical state as its input and outputs the predicted Q-values. It learns through backpropagating the temporal difference error over each step for a single neuron. Note that for the Q-Learning algorithm a backpropagation is done after every step of the simulation. To avoid correlation between succeeding experiences an experience buffer is used to randomly sample a training batch in each step. In the following papers regarding DQN architectures shall be introduced as well as papers dealing with the bomberman environment for reinforcement learning. 
+The problem with conventional Q-Learning is that in most of the cases the state dimension is far too high to explore and model the MDP entirely in foreseeable future. To deal with this problem the Q-values need to be approximated using a regression model. Deep neural networks have proven to be highly applicable for this task, which leads to the term of \textit{Deep-Q-Learning} and respectively \textit{Deep-Q-Networks} (DQN) for such network architectures. DQNs use the vectorized numerical state as its input and outputs the predicted Q-values. It learns through backpropagating the temporal difference error over each step for a single neuron. Note that for the Q-Learning algorithm a backpropagation is done after every step of the simulation. To avoid temporal correlation between succeeding experiences an experience buffer is used to randomly sample a training batch in each step. Also rare experiences will be used more frequently to update the model parameters using this approach. In the following papers regarding DQN architectures shall be introduced as well as papers dealing with the bomberman environment for reinforcement learning. 
 
 Paper \cite{vanHasselt2015} tackles the problem that the $max$ operator in \ref{QLearning} often leads to overoptimistic value estimates as the DQN uses the same Q-values to both select and evaluate an action. It therefore changes the iterative update formula to \ref{DoubleQLearning}.
 
@@ -41,7 +41,31 @@ Using the dueling architecture approach an agent can learn which states are valu
 
 Obviously, approaches exist that combine double Deep-Q-Learning with dueling architectures like \cite{Huang2018}. 
 
-% TODO: Prioritized replay buffer
+Besides optimizing the learning process itself and the model architecture, \cite{Schaul2016} now proposes a way to sample more efficiently from the experience buffer. Each experience is assigned a learning priority score $p_i$ with 
+
+\begin{equation} \label{prio}
+	p_i = \frac{1}{rank(i)}
+\end{equation}
+
+where $rank(i)$ is the rank of experience $i$ in the priority queue built upon the magnitude of the temporal difference error $\delta$ of each experience. The stochastic sampling probability of each experience is then calculated according to 
+
+\begin{equation} \label{prob}
+	P(i) = \frac{p_i^{\alpha}}{\sum_k p_k^{\alpha}} \;\;\;\; with \; 0\le\alpha\le1.
+\end{equation}
+
+The hyperparameter $\alpha$ determines the degree of using prioritization over random sampling. Using this stochastic sampling approach tackles the problem of a diversity loss and subsequent over-fitting when just greedyly sampling according to the magnitude of $\delta$. One could also choose 
+
+\begin{equation} \label{prio2}
+	p_i = \abs{\delta_i} + \epsilon
+\end{equation}
+
+instead of \ref{prio} but the latter is more prone to outliers. Furthermore, each gradient descent step during backpropagation needs to be weighted with 
+
+\begin{equation} \label{weight}
+	w_i = ( \frac{1}{N} \frac{1}{P(i)} )^\beta
+\end{equation}
+
+to counter a bias introduced using the prioritized experience buffer. The weights should also be normalized with $\frac{1}{max_i w_i}$. As an unbiased nature of weight updates is esspecially important during the last training updates near convergence, $\beta$ increases slowly from a start value $\beta_0$ to 1 over time. 
 
 There are several other improvements mentioned in the rainbow paper \cite{Hessel2017} like multi-step learning, distributional reinforcement learning and noisy nets, but these are out of the scope for this small research project. 
 
