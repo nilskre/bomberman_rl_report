@@ -4,6 +4,45 @@
 \subsection{Reinforcement Learning Method and Regression Model} 
 \label{ch:approachA}
 
+\subsubsection{Features}
+\label{ch:approachAa}
+
+This chapter describes how the game state is transformed into input features for the model. 
+Our initial encoding is based on \cite{Kormelink2018}. The Dictionary containing the game state is transformed into one vector, containing the input features.
+Our input feature vector consists of the following five independent matrices:
+\begin{itemize}
+	\item Field state: free (0), breakable (1), obstructed cell (-1)
+	\item Player position: player (1), otherwise(0)
+	\item Opponent positions: opponent (1), otherwise(0)
+	\item Danger level of position: danger (1), no danger (0) \newline
+	Danger is caused by bombs on all fields an explosion can reach. Two aspects influence the value how dangerous a field is. The time until the bomb explodes and the distance from the bomb. We derived following equation for calculating the danger of a field for the field containing the bomb and the surrounding fields.
+	
+	$ danger = \frac{\frac{time\_Passed}{time\_needed\_to\_explode}}{\sqrt{distance}} $
+	
+	For example the bomb explodes after 4 time steps. Currently 2 time steps are over and the distance to the bomb is 3:
+	
+	$ danger = \frac{\frac{2}{4}}{\sqrt{2}} = 0.70 $
+	
+	TODO: normalized through equation
+	TODO: advantage: gradation
+	
+	\item Desirability of position: desirable (1), not desirable (0)
+\end{itemize}
+These matrices are flattened and concatenated. This results in a feature vector containing 1445 elements (5*17*17).
+
+Among other factors due to the high dimensionality the training process could be very slow. That is why the input state is further minimized.
+
+TODO: adapt
+\begin{itemize}
+	\item Field state: free (0), breakable (1), obstructed cell (-1)
+	\item Player position: player (1), otherwise(0)
+	\item Opponent positions: opponent (1), otherwise(0)
+	\item Danger level of position: danger (1), no danger (0)
+	\item Desirability of position: desirable (1), not desirable (0)
+\end{itemize}
+These matrices are flattened and concatenated. This results in a feature vector containing 578 elements (2*17*17).
+
+
 % TODO: The first section shall describe the reinforcement learning method and regression model you finally implemented, including all crucial design choices. You may also describe approaches you tried and abandoned later, including the reasons.
 
 \begin{itemize}
@@ -15,6 +54,12 @@
 \label{ch:approachB}
 
 % TODO: The second section should describe your training process, including all tricks employed to speed it up (e.g. self play strategy, design of auxilliary rewards, prioritization of experience replay and so on).
+
+
 \begin{itemize}
 	\item Experience buffer
 \end{itemize}
+
+\subsubsection{Imitation Learning}
+\label{ch:approachBx}
+TODO
