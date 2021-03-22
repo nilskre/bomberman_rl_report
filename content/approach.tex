@@ -10,7 +10,7 @@
 \label{ch:approachAa}
 
 This chapter describes how the game state is transformed into input features for the model. 
-Our initial encoding is based on \cite{Kormelink2018}. The Dictionary containing the game state is transformed into one vector, containing the input features.
+Our initial encoding is based on \cite{Kormelink2018}. The dictionary containing the game state is transformed into one vector, containing the input features.
 Our input feature vector consists of the following five independent matrices:
 \begin{itemize}
 	\item Field state: free (0), breakable (1), obstructed cell (-1)
@@ -45,7 +45,7 @@ TODO: adapt
 These matrices are flattened and concatenated. This results in a feature vector containing 578 elements (2*17*17).
 
 
-\subsubsection{Double dueling DQN}
+\subsubsection{Double Dueling DQN}
 \label{ch:approachAb}
 
 
@@ -85,10 +85,23 @@ The second improvement was to include an exploration function as \cite{Geron2018
 
 with $q$ being the Q-value and $n$ being the count how often a specific action $a$ was chosen in state $s$. $K$ is a hyperparameter that determines the amount of curiosity during training. To implement this one would need to store $n$ for every state and action. But as the state is far too high dimensional in the Bomberman environment this would require a lot of training just as using the Max Boltzmann exploration method to be beneficial in the end. 
 
-\subsubsection{Experience buffer and sum tree}
-\label{ch:approachBb}
+\subsubsection{Prioritized Experience Replay Buffer and SumTree}
+Furthermore, a prioritized experience replay buffer was utilized to speed up the training process. To efficiently sample from it, a SumTree data structure was implemented inspired by \cite{Schaul2016}, which is a binary tree whose parent nodes store the sum of its children. All leaf nodes of the SumTree store the priority of each temporal difference error which is the L1-norm between two succeeding Q-values. The SumTree inherently offers a stratified sampling method to sample experiences with a high temporal difference error and therefore high priority more often. Therefore the leaf nodes are grouped into sum segments with a sum value greater or equal a threshold value. Each segment can therefore contain a different amount of leaf nodes as priorities often differ in their magnitude. The amount of segments is determined by the demanded batch size and the threshold value by dividing the total sum of the tree (stored in the root node) by the batch size. From each segment one priority is sampled uniformly. As high priorities have less competitors in their segment, they will be sampled more frequently until they get overwritten.  
 
-\subsubsection{Imitation learning}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{figures/sumtree.PNG}
+	\caption{Stratified sampling of priorities from a SumTree}
+	\label{fig:sumtree}
+\end{figure}
+
+\autoref{fig:sumtree} illustrates the process of sampling priorities with a batch size of four. One can see that the priority with magnitude ten will be sampled every time as it is the only priority within the sum segment. One can also see that in case the prioritized experience replay buffer is not filled, zeros might be sampled. To counteract this, the amount of sum segments to divide the SumTree into is the batch size plus one. Adding values to the SumTree has the complexity O(n) whereas updating the SumTree has the complexity O(log n). 
+
+The prioritized experience replay buffer only stores the priorities in the SumTree. The tuple $(s,a,r,s')$ is stored in a separate list. To access the according experience tuple for a priority, one can easily calculate the acording index by $index_{list} = index_{tree} - size_{per} + 1$. Note that \autoref{prio2} is used to calculate the priority value for each temporal difference error instead of \autoref{prio} as one would need to also sort the priorities in a different data structure which would add additional complexity and computing time. When sampling a batch from the prioritized experience replay buffer the tupel $(s,a,r,s')$, the according priorities, normalized weighting factors and update indices are returned. 
+
+Drawbacks of using a prioritized experience replay buffer over a normal experience replay buffer is the continuous maintenance of the SumTree data structure, which is currently updated every training step, i.e. every step in an episode. This adds additional computing time but the time gained in training progress by using prioritization should make up the time lost by maintaining the SumTree. 
+
+\subsubsection{Imitation Learning}
 \label{ch:approachBc}
 
 \subsubsection{Rewards}
@@ -97,6 +110,6 @@ with $q$ being the Q-value and $n$ being the count how often a specific action $
 \subsubsection{Hyperparameters}
 \label{ch:approachBe}
 
-\subsubsection{Cloud training}
+\subsubsection{Cloud Training and Training Visualization}
 \label{ch:approachBf}
 
