@@ -10,37 +10,40 @@
 \label{ch:approachAa}
 
 This chapter describes how the game state is transformed into input features for the model. 
-Our initial encoding is based on \cite{Kormelink2018}. The dictionary containing the game state is transformed into one vector, containing the input features.
+Our initially tried encoding is based on \cite{Kormelink2018}. The dictionary containing the game state is transformed into one vector, containing the input features.
 Our input feature vector consists of the following five independent matrices:
 \begin{itemize}
-	\item Field state: free (0), breakable (1), obstructed cell (-1)
+	\item Field state: free (0), breakable (1), obstructed cell (0.5)
 	\item Player position: player (1), otherwise(0)
 	\item Opponent positions: opponent (1), otherwise(0)
 	\item Danger level of position: danger (1), no danger (0) \newline
-	Danger is caused by bombs on all fields an explosion can reach. Two aspects influence the value how dangerous a field is. The time until the bomb explodes and the distance from the bomb. We derived following equation for calculating the danger of a field for the field containing the bomb and the surrounding fields.
+	Danger is caused by bombs on all fields an explosion can reach. Two aspects influence the value how dangerous a field is. The time until the bomb explodes and the distance from the bomb. We derived following equation for calculating the danger of a field for the field containing the bomb and the surrounding fields. The resulting danger score is normalized through the equation in the range between 0 and 1.
 	
 	$ danger = \frac{\frac{time\_Passed}{time\_needed\_to\_explode}}{\sqrt{distance}} $
 	
-	For example the bomb explodes after 4 time steps. Currently 2 time steps are over and the distance to the bomb is 3:
+	Example 1: the bomb explodes after 4 time steps. Currently 2 time steps are over and the distance to the bomb is 3:
 	
-	$ danger = \frac{\frac{2}{4}}{\sqrt{2}} = 0.70 $
+	$ danger = \frac{\frac{2}{4}}{\sqrt{3}} = 0.28 $
 	
-	TODO: normalized through equation
-	TODO: advantage: gradation
+	Example 2: the bomb explodes after 4 time steps. Currently 3 time steps are over and the distance to the bomb is 1:
 	
-	\item Desirability of position: desirable (1), not desirable (0)
+	$ danger = \frac{\frac{3}{4}}{\sqrt{2}} = 0.75 $
+	
+	\item Desirability of position: coin (1), no coin (0)
 \end{itemize}
 These matrices are flattened and concatenated. This results in a feature vector containing 1445 elements (5*17*17).
 
 Among other factors due to the high dimensionality the training process could be very slow. That is why the input state is further minimized.
+Franca, Paes and Clua \cite{Franca2019} evaluated five different strategies for state representation (Binary Flag, Normalized Binary Flag, Hybrid, ICAART, ZeroOrOne). The performance of the different encodings is measured by the cumulative rewards during training in relation to the number of episodes. Their results were that Hybrid, ICAART and ZeroOrOne perform better than Binary Flag and Normalized Binary Flag. The best encoding regarding to \cite{Franca2019} is ICAART. That is why our finally implemented encoding is based on ICAART.
 
-TODO: adapt
+The following paragraphs describe our finally chosen encoding:
+The matrices above encode three different types of information:
+general information (field state, player position, opponent positions), desired positions (Desirability of position) and dangerous positions (Danger level of position).
+We minimize the input state by concatenating general information and desired positions in one matrix and dangerous fields in another one. This keeps the balance between clearly separated information and maximal state minimization.
+
 \begin{itemize}
-	\item Field state: free (0), breakable (1), obstructed cell (-1)
-	\item Player position: player (1), otherwise(0)
-	\item Opponent positions: opponent (1), otherwise(0)
-	\item Danger level of position: danger (1), no danger (0)
-	\item Desirability of position: desirable (1), not desirable (0)
+	\item General information and desired positions: free (0), breakable (1.5), obstructed cell (-1.5), own position (2), opponent positions (-2), coin (1)
+	\item Danger level of position: danger (-1), no danger (0)
 \end{itemize}
 These matrices are flattened and concatenated. This results in a feature vector containing 578 elements (2*17*17).
 
