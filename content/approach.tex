@@ -122,6 +122,7 @@ Rewards are given when different kind of actions are taken or different kind of 
 		\textbf{Reward} & \textbf{Amount} \\ \hline
 		Movement in/out of danger zone & -0.3/+0.3 \\ \hline
 		Movement towards/away from nearest coin & +0.1/-0.1 \\ \hline
+		Movement towards/away from nearest opponent & +0.05/-0.05 \\ \hline
 		WAITED & -0.2 \\ \hline
 		INVALID\_ACTION & -1 \\ \hline
 		BOMB\_DROPPED & 0.4 \\ \hline
@@ -135,16 +136,15 @@ Rewards are given when different kind of actions are taken or different kind of 
 
 Setting the rewards properly is a very difficult task and hard to evaluate without empirical study. Specifically for the Bomberman environment only for literatue was found that covers a reward function \cite{Kormelink2018, Franca2019}. All rewards are normalized to be in between -1 and 1 for more efficient training. Also focus was set on giving reward feedback as soon as possible to guide the training process better towards the desired behavior. 
 
-
 In the first step the agent should be encouraged to gather coins, which is why the movement towards the nearest coin is rewarded. Nevertheless especially in the beginning of a game and also in late game phases setting bombs to find coins, to explore the arena and to kill opponents is even more crucial than finding coins. This is why the reward for dropping bombs is even higher than moving towards coins and gathering coins. To place bombs near creates the reward for destroying crates is set above the reward to simply dropping a bomb. 
 
 Having this setup of arranging rewards leads to a lot of suicide of the agent in the very beginning of the training phase even if the the own agents death is punished. Therefore rewards for moving out of danger zones and punishments for moving in danger zones are given to encourage the agent to walk away from bombs dropped. Note that this reward is even higher than the movement reward towards the nearest coin to keep an agent out of a danger zone in case a coin is located in the bomb radius. 
 
-Also an agent doing nothing or a invalid action should be punished by a negative reward. Therefore also no reward is given for rounds survived. Committing suicide or idleing was a big problem especially in the early stages of the training phase that should be counter using the introduced reward function. 
+Also an agent doing nothing or a invalid action should be punished by a negative reward. Therefore also no reward is given for rounds survived. Committing suicide or idleing was a big problem especially in the early stages of the training phase that should be countered using the introduced reward function. 
 
-Killing opponents gives the highest reward, which is exactly five times higher than collecting a coin just like the points given inside the game.
+Killing opponents gives the highest reward, which is exactly five times higher than collecting a coin just like the points given inside the game. Finally to encourage an agent to also move towards an opponent agent an additional movement reward is given for moving towards the nearest opponents and a punishment in case the agent runs away from the nearest agent. Nevertheless such a reward is scaled quite low and only becomes more important in the late game steps. In the early stages of a game the agent should rather learn how to collect coins, how to destroy crates and how to survive. 
 
-Additional rewards could be given in case the agent gets closer to an opponent agent in case the agent does not commit enough to kill opponent agents during late game rounds. This still has to be evaluated.
+One could also think of introducing a reward schedule that increases certain rewards during a game and lowers others. This could be applied when all coins are collected and an agents score can only be increased by killing opponents. This still has to be evaluated.
 
 \subsubsection{Hyperparameters}
 \label{ch:approachBe}
