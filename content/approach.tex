@@ -109,6 +109,21 @@ Drawbacks of using a prioritized experience replay buffer over a normal experien
 \subsubsection{Imitation Learning}
 \label{ch:approachBc}
 
+For addressing the challenge of long training times Imitation learning can be used. With the rule  based agent already a strong agent is present in the project. The idea of Imitation learning is to speed up training by learning from existing behavior (e.g. from the rule based agent).
+
+Paper X Y and Z have done IL and received XYZ results.
+can outperform their teachers
+
+How it is realized
+This optimization is realized
+Training process is split into a pretraining phase and a training phase. In the pretraining phase two tasks
+train network
+fill experience buffer
+
+Second  step:
+Start training (standard RL) with the already filled experience buffer.
+
+
 \subsubsection{Reward shaping}
 \label{ch:approachBd}
 
