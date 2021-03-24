@@ -194,6 +194,36 @@ Furthermore, the model and the  prioritized experience replay buffer are stored 
 \subsubsection{Local Training Setup}
 \label{ch:approachBf}
 
-\subsubsection{Cloud Training and Training Visualization}
+\subsubsection{Training Visualization}
 \label{ch:approachBg}
 
+\subsubsection{Cloud Training}
+\label{ch:approachBh}
+
+To further accelerate the training process and enable fast iterations for improving the approach, the possibility of training in the Cloud was evaluated. 
+
+The prospects of success were shown by Lawrence et al. \cite{Lawrence2017ComparingTD}. They evaluated the TensorFlow Deep Learning performance between CPUs, GPUs, local computers and the cloud. Their findings were that the usage of GPUs leads to a significant performance increase. Furthermore the cloud is not better by default. That is why it is recommended to compare the GPU performance metrics (compute capability score) of the local and the cloud configuration.
+
+Based on these findings for our purposes two requirements exist:
+\begin{enumerate}
+	\item The Cloud GPUs should be much more performant than the local GPUs. To notice visible improvements we at least expect a compute capability score of seven.
+	\item The GPUs could be used for free.
+\end{enumerate}
+
+Hale \cite{haleBestDealsDeep2019} compares the following Cloud providers: Google Colab, Google Cloud Platform, AWS, Paperspace and vast.ai. In general either the first or the second requirement are not fulfilled by the different cloud providers. 
+
+This is exemplary illustrated by means of Google Colab and Google Cloud Platform. 
+On the one hand Google Colab can be used after converting the project into one jupyter notebook. GPUs can be used for a limited time frame for free. The available GPUs are Nvidia K80s, T4s, P4s and P100s, which are assigned automatically \cite{googleeditorColaboratoryGoogleFAQ}. The compute capability score lies depending on the GPU between 3.7 and 7.5 \cite{nvidiaeditorCUDAGPUs2012}. So Google Colab matches the second requirement, but not the first one. 
+On the other hand the Google Cloud Platform, especially the AI Platform offers many performant GPUs to choose from, but it can quickly become very expensive, as the following example calculation shows \cite{googleeditorGPUsTrainierenModellen}. 
+
+The calculation was done with the Google Cloud Pricing Calculator \cite{googleeditorGoogleCloudPlatformPreisrechner} and following parameters:
+\begin{itemize}
+	\item Region: United States
+	\item Selected tier: BASIC\_GPU
+	\item Job run time in minutes: 4320min (3 days)
+	\item => estimated costs: 71.93€
+\end{itemize}
+
+That is why the Google Cloud Platform matches the first requirement, but not the second one.
+
+Based on the above findings the possibility of cloud training is not realized.
