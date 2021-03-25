@@ -171,7 +171,7 @@ Also an agent doing nothing or a invalid action should be punished by a negative
 
 Killing opponents gives the highest reward, which is exactly five times higher than collecting a coin just like the points given inside the game. Finally to encourage an agent to also move towards an opponent agent an additional movement reward is given for moving towards the nearest opponents and a punishment in case the agent runs away from the nearest agent. Nevertheless such a reward is scaled quite low and only becomes more important in the late game steps. In the early stages of a game the agent should rather learn how to collect coins, how to destroy crates and how to survive. 
 
-One could also think of introducing a reward schedule that increases certain rewards during a game and lowers others. This could be applied when all coins are collected and an agents score can only be increased by killing opponents. This still has to be evaluated.
+One could also think of introducing a reward schedule that increases certain rewards during a game and lowers others. This could be applied when all coins are collected and an agents score can only be increased by killing opponents. Such a dynamic adjusting reward function still has to be evaluated.
 
 \subsubsection{Hyperparameters}
 \label{ch:approachBe}
