@@ -44,7 +44,23 @@ The complete opposite of what was expected was observed, the loss increased wher
 
 The next generation of the model was trained on a normal experience replay buffer with the following results:
 
-[image here]
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/training2-main-loss-smooth.PNG}
+		\caption{Main-training loss}
+		\label{fig:main-loss-smoothed-2}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/training2-main-reward-smooth.PNG}
+		\caption{Main-training average reward}
+		\label{fig:main-reward-smoothed-2}
+	\end{subfigure}
+\end{figure}
 
-We also increased the initial exploration factor $\epsilon$ to one to counter a possible pre-training bias and decreased the maximum size of the experience replay buffer to 32.768 instead of 65.536 to train on more recent experiences. 
+Also, the initial exploration factor $\epsilon$ was increased to one to counter a possible pre-training bias and the maximum size of the experience replay buffer was decreased from 65.536 to 32.768 to train on more recent experiences. The green curve shows the training development until 5k episodes, which was then expanded to another 13k episodes plotted in the gray curve. 
 
+Having done these changes results in a far lower training loss curve which converges to an average episode loss of 250 per five episodes. Also the reward curve seems to converge at an average loss of about minus four. Nevertheless, this average reward still is not what was expected and when looking at the actual agent behavior, the agent always chooses to wait. 
