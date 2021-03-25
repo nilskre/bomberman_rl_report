@@ -51,6 +51,20 @@ These matrices are flattened and concatenated. This results in a feature vector 
 \subsubsection{Double Dueling DQN}
 \label{ch:approachAb}
 
+Based on the literature research, described in chapter \ref{fundamentals_related_work}, a Double Dueling DQN approach was selected. The concrete implementation and structure of this approach can be seen in figure \ref{fig:model}.
+In the first layer, our feature vector (chapter \ref{ch:approachAa}) is inserted. The input layer is followed by a fully connected Dense layer. In the next step the Dueling optimization is implemented. By the Lambda layer the input is split into a value and an advantage stream. 
+The advantage stream consists of a Flatten layer, a Dense layer and a custom Lambda layer for reducing the mean.
+The value stream is first flattened by a Flatten layer and then fed into a fully connected Dense layer.
+Finally both streams are again merged for receiving the final Q values.
+
+TODO: update?
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/model.png}
+	\caption{Structure of the DQN model}
+	\label{fig:model}
+\end{figure}
+
 
 
 \subsection{Training process} 
@@ -68,6 +82,7 @@ When choosing the right method for the exploration-exploitation tradeoff, \cite{
 	\includegraphics[width=0.6\linewidth]{figures/exploration.PNG}
 	\caption{Comparison of different exploration methods}
 	\label{fig:exploration}
+	\cite{Kormelink2018}
 \end{figure}
 
 In the long run, Max Boltzmann performs best with 
