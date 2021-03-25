@@ -109,20 +109,17 @@ Drawbacks of using a prioritized experience replay buffer over a normal experien
 \subsubsection{Imitation Learning}
 \label{ch:approachBc}
 
-For addressing the challenge of long training times Imitation learning can be used. With the rule  based agent already a strong agent is present in the project. The idea of Imitation learning is to speed up training by learning from existing behavior (e.g. from the rule based agent).
+For addressing the challenge of long training times, Imitation learning can be used. With the rule  based agent, already a strong agent is present in the project. The idea of Imitation learning is to speed up training by learning from existing behavior (e.g. from the rule based agent).
 
-Paper X Y and Z have done IL and received XYZ results.
-can outperform their teachers
+The general applicability of Imitation learning was evaluated by Hester et al. \cite{hester2017deep} and the application of Imitation learning for the game Bomberman was examined by Franca, Paes and Clua \cite{Franca2019}.
 
-How it is realized
-This optimization is realized
-Training process is split into a pretraining phase and a training phase. In the pretraining phase two tasks
-train network
-fill experience buffer
+Hester et al. \cite{hester2017deep} stated, that their Imitation learning approach (Deep-Q-learning from demonstrations) is better then a prioritized Dueling Double Deep Q-Network approach. Furthermore they have discovered, that the trained agent is able to outperform the behavior shown in training.
 
-Second  step:
-Start training (standard RL) with the already filled experience buffer.
+Franca, Paes and Clua \cite{Franca2019} have found out in a setting comparable to our project that Imitation learning followed by PPO learning (Proximal Policy Optimization) achieves the best results. The PPO algorithm is a model-free Reinforcement learning algorithm, which uses the advantage operator instead of Q-values.
 
+As optimization for our approach (chapter \ref{ch:approachAb}), we implemented Imitation learning based on \cite{hester2017deep}. This optimization is realized by splitting the training into a pretraining phase and a training phase. In the pretraining phase the Imitation learning takes place. The experience buffer is filled by the actions of the rule based agent and and the DQN is pretrained.
+In the training phase the standard Reinforcement learning approach takes place. Based on the pretrained DQN and the filled experience buffer the training process is executed.
+For an evaluation of this training structure please refer to \ref{experimental_results}.
 
 \subsubsection{Reward shaping}
 \label{ch:approachBd}
