@@ -47,6 +47,9 @@ We minimize the input state by concatenating general information and desired pos
 \end{itemize}
 These matrices are flattened and concatenated. This results in a feature vector containing 578 elements (2*17*17).
 
+As further optimization one could also include behavioral information as part of the features. E.g. one could encode the optimal path to the coins as one feature or reactions after placing a bomb (run away).
+Such a feature representation could be interpreted as step away from an Machine learning based agent to a rule based agent. In order to avoid this gray area of potentially violating the requirements we decided to not implement feature representations, which enhance the state information by behavioral information.
+
 
 \subsubsection{Double Dueling DQN}
 \label{ch:approachAb}
@@ -218,22 +221,34 @@ Choosing the right $\gamma$ in approximative Q-learningis not too important as f
 
 Furthermore, the model and the  prioritized experience replay buffer are stored every 100 epsiodes in case the training process crashes because of unforeseen events. 
 
-\subsubsection{Local Training Setup}
+\subsubsection{Cloud Training}
 \label{ch:approachBf}
 
-\subsubsection{Training Visualization}
-\label{ch:approachBg}
+To further accelerate the training process and enable fast iterations for im\-pro\-ving the approach, the possibility of training in the Cloud was evaluated. 
 
-\subsubsection{Cloud Training}
-\label{ch:approachBh}
+The prospects of success were shown by Lawrence et al. \cite{Lawrence2017ComparingTD}. They evaluated the TensorFlow Deep Learning performance between CPUs, GPUs, local computers and the cloud. Their findings were that the usage of GPUs leads to a significant performance increase. Furthermore the cloud is not better by default. That is why it is recommended to compare the GPU performance metrics (e.g. compute capability score) of the local and the cloud configuration. The following table \ref{table:hardware} compares common GPUs.
+Especially Nvidia is known in the area of GPUs for it's Compute Unified Device Ar\-chi\-tec\-tu\-re (CUDA). It provides a programming model and parallel computing platform for outsourcing processes to the GPU. In the area of Deep Learning there is the supplementary library called Nvidia CUDA Deep Neural Network Library (cuDNN), which provides hardware optimized routines for Deep Learning tasks.
 
-To further accelerate the training process and enable fast iterations for improving the approach, the possibility of training in the Cloud was evaluated. 
+\begin{center}
+	\begin{tabular}[H]{l|c|c|c|c|c|c}
+		& K80 & P100 & T4 & V100 & GTX 1080 \\
+		\hline
+		CUDA Cores & 2496 & 3584 & 2560 & 5120 & 2560 \\
+		Tensor Cores & / & / & 320 & 640 & / \\
+		TeraFLOPS (Single Precision) & 4,113 & 9,526 & 8,141 & 14,13 & 9,784  \\
+		Memory Bandwidth (GB/sec) & 240,6 & 732,2 & 320 & 897 & 345,6 \\
+		Suggested Power Supply Unit & 700 & 600 & 350 & 600 & 450 \\
+		Compute capability & 3.7 & 6.0 & 7.5 & 7.0 & 6.1 \\ 
+	\end{tabular}
+	\captionof{table}{GPU comparison}
+	\label{table:hardware}
+	Based on \cite{techpowerupeditorTechPowerUp} and \cite{nvidiaeditorCUDAGPUs2012}
+\end{center}
 
-The prospects of success were shown by Lawrence et al. \cite{Lawrence2017ComparingTD}. They evaluated the TensorFlow Deep Learning performance between CPUs, GPUs, local computers and the cloud. Their findings were that the usage of GPUs leads to a significant performance increase. Furthermore the cloud is not better by default. That is why it is recommended to compare the GPU performance metrics (compute capability score) of the local and the cloud configuration.
 
-Based on these findings for our purposes two requirements exist:
+Based on these basic information regarding training hardware and the associated findings, for our purposes two requirements exist:
 \begin{enumerate}
-	\item The Cloud GPUs should be much more performant than the local GPUs. To notice visible improvements we at least expect a compute capability score of seven.
+	\item The Cloud GPUs should be much more performant than the local GPU (local GPU: GTX 1080). To notice visible improvements we at least expect a compute capability score of seven.
 	\item The GPUs could be used for free.
 \end{enumerate}
 
@@ -253,4 +268,14 @@ The calculation was done with the Google Cloud Pricing Calculator \cite{googleed
 
 That is why the Google Cloud Platform matches the first requirement, but not the second one.
 
-Based on the above findings the possibility of cloud training is not realized.
+Based on the above findings the possibility of cloud training is not realized and the training process is executed locally. 
+
+\subsubsection{Local Training Setup}
+\label{ch:approachBg}
+
+In this chapter the local training setup is described. As mentioned in the previous chapter our local training  setup is based on the GPU Nvidia GTX 1080. Furthermore we use CUDA (version 11.2.1) and the cuDNN library (version 8.1.0). In cooperation with TensorFlow (version 2.4.1) it is ensured that the local hardware is used optimally for the training process.
+
+%TODO: wie schnell können X episoden trainiert werden?
+
+\subsubsection{Training Visualization}
+\label{ch:approachBh}
