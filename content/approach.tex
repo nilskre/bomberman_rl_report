@@ -91,7 +91,7 @@ In the long run, Max Boltzmann performs best with
 
 and T being the temperature parameter. But as the result is based on 100 generations of training with each generation comprising 10.000 episodes, Diminishing $\epsilon$-Greedy as the second best exploration method was chosen as this exploration method converges faster in the early stages of training.
 
-Two improvements where considered to optimize the exploration phase, but were discarded in the end. The first one is to replace the uniform sampling method by a multinomial sampling method in case an exploration step should be done, i.e. when a randomly generated number is smaller than $\epsilon$. This means the second best action would be chosen more often compared to other actions during the exploration phase. This could be beneficial especially in later phases of training in case the Q-values are close to each other. But esspecially in the beginning of the training phase this could lead towards an unintended bias towards specific actions as the exploration of others will be suppressed probabilistically.
+Two improvements where considered to optimize the exploration phase, but were discarded in the end. The first one is to replace the uniform sampling method by a multinomial sampling method in case an exploration step should be done, i.e. when a randomly generated number is smaller than $\epsilon$. This means the second best action would be chosen more often compared to other actions during the exploration phase. This could be beneficial especially in later phases of training in case the Q-values are close to each other. But especially in the beginning of the training phase this could lead towards an unintended bias towards specific actions as the exploration of others will be suppressed probabilistically.
 
 The second improvement was to include an exploration function as \cite{Geron2018} proposes. A simple exploration function could be 
 
@@ -267,10 +267,11 @@ Based on the above findings the possibility of cloud training is not realized an
 \subsubsection{Local Training Setup}
 \label{ch:approachBg}
 
-As mentioned in the previous chapter our local training setup is based on the GPU Nvidia GTX 1080 with a comuting power of 6.1 out of 10. Furthermore we use CUDA (version 11.2.1) and the cuDNN library (version 8.1.0). In cooperation with TensorFlow (version 2.4.1) it is ensured that the local hardware is used optimally for the training process. The performance during training heavily depends on the progress a model has made so far. Pre-training usually takes longer as the full 400 steps are normally taken per episode which results in a performance of 1000 episodes in nine hours. At the beginning of the main training phase, esspecially when the amount of exploration is still high and the model did not converge yet, 1000 episodes can trained in less then one hour (approx. 35 minutes).  
+As mentioned in the previous chapter our local training setup is based on the GPU Nvidia GTX 1080 with a comuting power of 6.1 out of 10. Furthermore we use CUDA (version 11.2.1) and the cuDNN library (version 8.1.0). In cooperation with TensorFlow (version 2.4.1) it is ensured that the local hardware is used optimally for the training process. The performance during training heavily depends on the progress a model has made so far. Pre-training usually takes longer as the full 400 steps are normally taken per episode which results in a performance of 1k episodes in nine hours. At the beginning of the main training phase, especially when the amount of exploration is still high and the model did not converge yet, 1k episodes can trained in less then one hour (approx. 35 minutes).  
 
 \subsubsection{Training Visualization}
 \label{ch:approachBh}
 
+To visualize the training process TensorBoard is utilized. Every five episodes the TensorBoard is updated with the average of the last five total rewards gathered over each episode, the average of the last five total episode losses, the current exploration factor $\epsilon$ and the current learning rate. 
 
 

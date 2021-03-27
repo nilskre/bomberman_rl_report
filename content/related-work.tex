@@ -37,7 +37,7 @@ and measures the importance of each action. The special aggregating layer uses \
 	Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + (A(s, a; \theta, \alpha) - \frac{1}{\abs{A}} \sum_{a'}A(s, a'; \theta, \alpha)) 
 \end{equation}
 
-Using the dueling architecture approach an agent can learn which states are valuable independently of each action, which is esspecially useful in case actions do not influence the environment in any useful way. This leads to a better and more robust policy evaluation in the presence of many similar-valued actions. Also when looking at the last layer of a conventional DQN (see \autoref{fig:duelingDQN}) it usually becomes much more sparse and biased. As the state value is modeled as a single neuron in the dueling architecture, learning the state value function becomes much more efficient. 
+Using the dueling architecture approach an agent can learn which states are valuable independently of each action, which is especially useful in case actions do not influence the environment in any useful way. This leads to a better and more robust policy evaluation in the presence of many similar-valued actions. Also when looking at the last layer of a conventional DQN (see \autoref{fig:duelingDQN}) it usually becomes much more sparse and biased. As the state value is modeled as a single neuron in the dueling architecture, learning the state value function becomes much more efficient. 
 
 Obviously, approaches exist that combine double Deep Q-learning with dueling architectures like \cite{Huang2018}. 
 
@@ -65,7 +65,7 @@ instead of \ref{prio} but the latter is more prone to outliers. Furthermore, eac
 	w_i = ( \frac{1}{N} \frac{1}{P(i)} )^\beta
 \end{equation}
 
-to counter a bias towards high prioritized experiences introduced using the prioritized experience replay buffer. The weights should also be normalized with $\frac{1}{max_i w_i}$. As an unbiased nature of weight updates is esspecially important during the last training updates near convergence, $\beta$ increases slowly from a start value $\beta_0$ to 1 over time. 
+to counter a bias towards high prioritized experiences introduced using the prioritized experience replay buffer. The weights should also be normalized with $\frac{1}{max_i w_i}$. As an unbiased nature of weight updates is especially important during the last training updates near convergence, $\beta$ increases slowly from a start value $\beta_0$ to 1 over time. 
 
 There are several other improvements mentioned in the rainbow paper \cite{Hessel2017} like multi-step learning, distributional Reinforcement Learning and noisy nets, but these are out of the scope for this small research project. 
 

@@ -21,7 +21,7 @@ When starting the initial training process first a pre-training is executed whic
 	\end{subfigure}
 \end{figure}
 
-When initiating the main training process with experiences gained from the dueling double DQN itself the following training curves can be experienced:
+The two charts are not too surprising, the reward should on average be the same with a rule-based behavior. Also the loss does not decrease much with only 1.5k episodes of pre-training. When initiating the main training process with experiences gained from the dueling double DQN itself the following training curves can be experienced:
 
 \begin{figure}[ht]
 	\centering
@@ -61,11 +61,11 @@ The next generation of the model was trained on a normal experience replay buffe
 	\end{subfigure}
 \end{figure}
 
-Also, the initial exploration factor $\epsilon$ was increased to one to counter a possible pre-training bias and the maximum size of the experience replay buffer was decreased from 65.536 to 32.768 to train on more recent experiences. The green curve shows the training development until 5k episodes, which was then expanded to another 13k episodes plotted in the gray curve. 
+Also, the initial exploration factor $\epsilon$ was increased from 0.3 to 1 to counter a possible pre-training bias and the maximum size of the experience replay buffer was decreased from 65.536 to 32.768 to train on more recent experiences. The green curve shows the training development until 5k episodes, which was then expanded to another 13k episodes plotted in the gray curve. 
 
-Having done these changes results in a far lower training loss curve which converges to an average episode loss of 250 per five episodes. Also the reward curve seems to converge at an average loss of about minus four. Nevertheless, this average reward still is not what was expected and when looking at the actual agent behavior, the agent always chooses to wait. 
+Having done these changes results in a far lower training loss curve which converges to an average episode loss of 250 per five episodes. Also the reward curve seems to converge at an average loss of about minus four. Nevertheless, this average reward still is not what was expected and when looking at the actual agent behavior, the agent always chooses to wait. A possible explanation for this might be that the agent tries to avoid future punishments by just waiting until it gets killed by another player. 
 
-To tackle this the reward function was slightly adjusted by increasing the magnitue of each reward by 100 and therefore breaking the normalization. This results in the two following training curves:
+To escape the bad local optima and the small degree between rewards and punishments, the reward function was first slightly adjusted by increasing the magnitue of each reward by 100 and therefore breaking the normalization. This results in the two following training curves:
 
 \begin{figure}[ht]
 	\centering
@@ -84,4 +84,43 @@ To tackle this the reward function was slightly adjusted by increasing the magni
 	\end{subfigure}
 \end{figure}
 
-As one can see this negatively impacts the training behavior exponentially. 
+As one can see this negatively impacts the training behavior exponentially and got discarded right away. In the next try the adaption of the rewards were discarded again, the exploration factor $\epsilon$ remained at a start value of one and the maximum size of the experience replay buffer was left at 32.768. We increased the amount of episodes to train during the main training to 30k. This equals three generations which should show at least some improvements during the training process as in \cite{Kormelink2018}, especially when increasing the exploration. The following training curves were experienced: 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/training4-main-loss-smooth.PNG}
+	\caption{Main-training loss}
+	\label{fig:main-loss-smoothed-4}
+\end{figure}
+
+When looking at the smoothed loss (see \autoref{fig:main-loss-smoothed-4}) one can see the curve falls strictly monotonously from 1155 after around 2k episodes to 291 after 30k episodes. Having this setup taking the loss to around zero would still take ages when training locally. One could increase the learning rate, but previous experiments showed that this highly destabilized the training as the learning rate with 0.01 is already quite high compared to other papers \cite{Franca2019, Kormelink2018}. 
+
+\newpage
+
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/training4-main-reward-smooth.PNG}
+		\caption{Main-training average reward}
+		\label{fig:main-reward-smoothed-4}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/training4-epsilon.PNG}
+		\caption{$\epsilon$-decay}
+		\label{fig:epsilon-4}
+	\end{subfigure}
+\end{figure}
+
+Having higher exploration did not fix the problem of ecaping the bad local optima of the agent waiting until it gets killed. Instead it just seems to extend the training process as the loss is even higher than before. The course of the average reward curve (see \autoref{fig:main-reward-smoothed-4}) equals to the original one, but now after 18k episodes the average reward curve falls again. This development also seems to be independent from the exploration rate development (see \autoref{fig:epsilon-4}). 
+
+To summarize neither changing the magnitude of the rewards, nor increasing the exploration rate helped to escape the bad local optima. Only increasing the training episodes seems to very slowly decrease the loss which might result in another optima in future. But as such training takes a long time it was decided to not pursue further in the limited amout of time. 
+
+At this point the Bomberman scenario was simplified to only have one agent learning how to collect coins. Fortunately, this was achievable in the limited amount of time. 
+
+[Training curve + pictures]
+
+
+
