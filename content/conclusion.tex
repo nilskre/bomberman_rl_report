@@ -1,3 +1,28 @@
 \section{Conclusion} \label{conclusion}
 
-% TODO: The final section shall give an outlook on how you would improve your agent if you had more time, and how we can improve the game setup for next year. Behavioral features, dynamic adjusting reward function, longer training
+% TODO: The final section shall give an outlook on how you would improve your agent if you had more time, and how we can improve the game setup for next year.
+
+Unquestionably, there is a lot of research provided in the field of Deep Q-learning achieving impressive results. Unfortunately, much less research is provided in common problems when facing Reinforcement Learning issues, instead the same problems are re-discovered over and over again. A. Irpan, software engineer at Google Brain, summarizes these problems to point research into a common direction \cite{Irpan2018}. Some of the problems described match with the ones met within this project.
+
+One of them is the difficulty to design a reward function that matches the given environment and domain exactly right. Otherwise shaped rewards might introduce a bias that overfits to certain actions. This was experienced as the agent overfits to waiting as to avoid future punishments. 
+
+Even when having a well designed reward function, still it might be difficult to escape a local optimum. This phenomenon originates in a bad exploration-exploitation trade-off with much exploration leading to misleading data and bad training results and much exploitation leading to burn-in behaviors. This could be tackled by using count-based or curiosity-driven exploration as introduced in \autoref{expfunc}. Once again the behavior of the agent was also tried to be explained with this context. The bad local optimum was tried to escape by increasing the initial exploration rate $\epsilon$ while using the diminishing $\epsilon$-greedy exploration method. 
+
+Even after a successful training one could not guarantee that the agent would have behaved the same way as during training. Especially when training against a certain other model these models could tend towards a co-evolution during training that makes them generalize weakly when being put into another environment. 
+
+To conclude the difficulties faced during training the agent using a dueling double DQN, one can conclude: 
+
+\begin{quote}
+	\textit{\grqq[...] RL is very sensitive to both your initialization and to the dynamics of your training process, because your data is always collected online and the only supervision you get is a single scalar for reward. [...]. A policy that fails to discover good training examples in time will collapse towards learning nothing at all, as it becomes more confident that any deviation it tries will fail. \cite{Irpan2018}\grqq}
+\end{quote}
+
+Several improvements for future versions of the agent were collected. First the feature vector could be restricted to behavioral features instead of pure state features, which means pre-calculating certain tasks and only encode movement information and special game fields as features. This simplifies the learning process by not only minimizing the feature dimension but also by increasing the entropy of the features and therefore the degree of learning capability. Another way to alternate the feature vector is to use the actual encoded image of the playing field and giving it to a preceding convolutional neural network that is capable of recognizing certain patterns. Therefore similarities between states could be recognized and be encoded as the same feature vector that is then given to the normal dueling double DQN. This could once again minimize the feature space to important features only and therefore speed up the training process. 
+
+Next the reward function could be extended by dynamically adjusting certain rewards during the progress of a game like increasing the movement reward towards opponents. This has not become important so far as the agent does not reach the late game phase in the original environment. 
+
+This could be accomplished by utilizing count-based or curiosity-driven exploration to achieve a better exploration-exploitation trade-off or by pursueing more empirical experiments with different reward functions to escape the bad local optimum. 
+
+Last but not least, the episodes to train could be increased to evaluate whether the loss in \autoref{fig:main-loss-smoothed-4} would converge to zero and the reward in \autoref{fig:main-reward-smoothed-4} would actually start to increase again and therefore escape the bad local optimum of the agent always waiting. 
+
+
+

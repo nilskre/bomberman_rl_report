@@ -10,14 +10,14 @@
 \label{ch:approachAa}
 
 This chapter describes how the game state is transformed into input features for the model. 
-Our initially tried encoding is based on \cite{Kormelink2018}. The dictionary containing the game state is transformed into one vector, containing the input features.
-Our input feature vector consists of the following five independent matrices:
+The encoding initially chosen is based on \cite{Kormelink2018}. The dictionary containing the game state is transformed into one vector, containing the input features.
+The input feature vector consists of the following five independent matrices:
 \begin{itemize}
 	\item Field state: free (0), breakable (1), obstructed cell (0.5)
 	\item Player position: player (1), otherwise(0)
 	\item Opponent positions: opponent (1), otherwise(0)
 	\item Danger level of position: danger (1), no danger (0) \newline
-	Danger is caused by bombs on all fields an explosion can reach. Two aspects influence the value how dangerous a field is. The time until the bomb explodes and the distance from the bomb as escaping might become more difficult the closer an agent is to a bomb. We derived following equation for calculating the danger of a field for the field containing the bomb and the surrounding fields. The resulting danger score is normalized through the equation in the range between 0 and 1.
+	Danger is caused by bombs on all fields an explosion can reach. Two aspects influence the value how dangerous a field is. The time until the bomb explodes and the distance from the bomb as escaping might become more difficult the closer an agent is to a bomb. The following equation was derived for calculating the danger of a field for the field containing the bomb and the surrounding fields. The resulting danger score is normalized through the equation in the range between 0 and 1.
 	
 	$ danger = \frac{\frac{time\_Passed}{time\_needed\_to\_explode}}{\sqrt{distance}} $
 	
@@ -34,12 +34,11 @@ Our input feature vector consists of the following five independent matrices:
 These matrices are flattened and concatenated. This results in a feature vector containing 1445 elements (5*17*17).
 
 Among other factors due to the high dimensionality the training process could be very slow. That is why the input state is further minimized.
-Franca, Paes and Clua \cite{Franca2019} evaluated five different strategies for state representation (Binary Flag, Normalized Binary Flag, Hybrid, ICAART, ZeroOrOne). The performance of the different encodings is measured by the cumulative rewards during training in relation to the number of episodes. Their results were that Hybrid, ICAART and ZeroOrOne perform better than Binary Flag and Normalized Binary Flag. The best encoding regarding to \cite{Franca2019} is ICAART. That is why our finally implemented encoding is based on ICAART.
+Franca, Paes and Clua \cite{Franca2019} evaluated five different strategies for state representation (Binary Flag, Normalized Binary Flag, Hybrid, ICAART, ZeroOrOne). The performance of the different encodings is measured by the cumulative rewards during training in relation to the number of episodes. Their results were that Hybrid, ICAART and ZeroOrOne perform better than Binary Flag and Normalized Binary Flag. The best encoding regarding to \cite{Franca2019} is ICAART. That is why the final implemented encoding is based on ICAART.
 
-The following paragraphs describe our finally chosen encoding:
 The matrices above encode three different types of information:
 general information (field state, player position, opponent positions), desired positions (Desirability of position) and dangerous positions (Danger level of position).
-We minimize the input state by concatenating general information and desired positions in one matrix and dangerous fields in another one. This keeps the balance between clearly separated information and maximal state minimization.
+The input state is minimized by concatenating general information and desired positions into one matrix and dangerous fields into another one. This keeps the balance between clearly separated information and maximal state minimization.
 
 \begin{itemize}
 	\item General information and desired positions: free (0), breakable (1.5), obstructed cell (-1.5), own position (2), opponent positions (-2), coin (1)
@@ -53,7 +52,7 @@ As further optimization one could also include behavioral information as part of
 \label{ch:approachAb}
 
 Based on the literature research, described in chapter \ref{fundamentals_related_work}, a dueling double DQN approach was selected. The concrete implementation and structure of this approach can be seen in figure \ref{fig:model}.
-In the first layer, our feature vector (chapter \ref{ch:approachAa}) is inserted. The input layer is followed by a fully connected Dense layer. In the next step the dueling optimization is implemented. By the Lambda layer the input is split into a value and an advantage stream. 
+In the first layer, the feature vector (chapter \ref{ch:approachAa}) is inserted. The input layer is followed by a fully connected Dense layer. In the next step the dueling optimization is implemented. By the Lambda layer the input is split into a value and an advantage stream. 
 The advantage stream consists of a Flatten layer, a Dense layer and a custom Lambda layer for reducing the mean.
 The value stream is first flattened by a Flatten layer and then fed into a fully connected Dense layer.
 Finally both streams are again merged for receiving the final Q values.
@@ -95,7 +94,7 @@ Two improvements where considered to optimize the exploration phase, but were di
 
 The second improvement was to include an exploration function as \cite{Geron2018} proposes. A simple exploration function could be 
 
-\begin{equation}
+\begin{equation} \label{expfunc}
 	f(q,n) = q + \frac{K}{1+n}
 \end{equation}
 
@@ -128,9 +127,9 @@ The general applicability of Imitation Learning was evaluated by Hester et al. \
 
 Hester et al. \cite{hester2017deep} stated, that their Imitation Learning approach (Deep Q-learning from demonstrations) is better then a prioritized dueling double Deep Q-Network approach. Furthermore they have discovered, that the trained agent is able to outperform the behavior shown in training.
 
-Franca, Paes and Clua \cite{Franca2019} have found out in a setting comparable to our project that Imitation Learning followed by Proximal Policy Optimization (PPO) Learning achieves the best results. The PPO algorithm is a model-free Reinforcement Learning algorithm, which uses the advantage operator instead of Q-values.
+Franca, Paes and Clua \cite{Franca2019} have found out in a setting comparable to the project that Imitation Learning followed by Proximal Policy Optimization (PPO) Learning achieves the best results. The PPO algorithm is a model-free Reinforcement Learning algorithm, which uses the advantage operator instead of Q-values.
 
-As optimization for our approach (chapter \ref{ch:approachAb}), we implemented Imitation Learning based on \cite{hester2017deep}. This optimization is realized by splitting the training into a pretraining phase and a training phase. In the pretraining phase the Imitation Learning takes place. The experience replay buffer is filled by the actions of the rule-based agent and the DQN is pretrained.
+As an optimization for the chosen approach (chapter \ref{ch:approachAb}), Imitation Learning based on \cite{hester2017deep} was implemented. This optimization is realized by splitting the training into a pretraining phase and a training phase. In the pretraining phase the Imitation Learning takes place. The experience replay buffer is filled by the actions of the rule-based agent and the DQN is pretrained.
 In the training phase the standard Reinforcement Learning approach takes place. Based on the pretrained DQN and the filled experience replay buffer the training process is executed. For an evaluation of this training structure please refer to \autoref{experimental_results}.
 
 \subsubsection{Reward Shaping}
@@ -224,7 +223,7 @@ The prospects of success were shown by Lawrence et al. \cite{Lawrence2017Compari
 Especially Nvidia is known in the area of GPUs for it's Compute Unified Device Ar\-chi\-tec\-tu\-re (CUDA). It provides a programming model and parallel computing platform for outsourcing processes to the GPU. In the area of Deep Learning there is the supplementary library called Nvidia CUDA Deep Neural Network Library (cuDNN), which provides hardware optimized routines for Deep Learning tasks.
 
 \begin{center}
-	\begin{tabular}[H]{l|c|c|c|c|c|c}
+	\begin{tabular}[H]{l|c|c|c|c|c|}
 		& K80 & P100 & T4 & V100 & GTX 1080 \\
 		\hline
 		CUDA Cores & 2496 & 3584 & 2560 & 5120 & 2560 \\
@@ -236,23 +235,23 @@ Especially Nvidia is known in the area of GPUs for it's Compute Unified Device A
 	\end{tabular}
 	\captionof{table}{GPU comparison}
 	\label{table:hardware}
-	Based on \cite{techpowerupeditorTechPowerUp} and \cite{nvidiaeditorCUDAGPUs2012}
+	Based on \cite{TechPowerUp} and \cite{Nvidia}
 \end{center}
 
 
-Based on these basic information regarding training hardware and the associated findings, for our purposes two requirements exist:
+Based on these basic information regarding training hardware and the associated findings, for the purposes of this project two requirements exist:
 \begin{enumerate}
-	\item The Cloud GPUs should be much more performant than the local GPU (local GPU: GTX 1080). To notice visible improvements we at least expect a compute capability score of seven.
+	\item The Cloud GPUs should be much more performant than the local GPU (local GPU: GTX 1080). To notice visible improvements a compute capability of at least a score of seven is expected.
 	\item The GPUs could be used for free.
 \end{enumerate}
 
-Hale \cite{haleBestDealsDeep2019} compares the following Cloud providers: Google Colab, Google Cloud Platform, AWS, Paperspace and vast.ai. In general either the first or the second requirement are not fulfilled by the different cloud providers. 
+Hale \cite{Hale2019} compares the following Cloud providers: Google Colab, Google Cloud Platform, AWS, Paperspace and vast.ai. In general either the first or the second requirement are not fulfilled by the different cloud providers. 
 
 This is exemplary illustrated by means of Google Colab and Google Cloud Platform. 
-On the one hand Google Colab can be used after converting the project into one Jupyter Notebook. GPUs can be used for a limited time frame for free. The available GPUs are Nvidia K80s, T4s, P4s and P100s, which are assigned automatically \cite{googleeditorColaboratoryGoogleFAQ}. The compute capability score lies depending on the GPU between 3.7 and 7.5 \cite{nvidiaeditorCUDAGPUs2012}. So Google Colab matches the second requirement, but not necessarily the first one. Also much effort would have had to be invested into converting the project into a Jupyter Notebook. 
-On the other hand the Google Cloud Platform, especially the AI Platform offers many performant GPUs to choose from, but it can quickly become very expensive, as the following example calculation shows \cite{googleeditorGPUsTrainierenModellen}. 
+On the one hand Google Colab can be used after converting the project into one Jupyter Notebook. GPUs can be used for a limited time frame for free. The available GPUs are Nvidia K80s, T4s, P4s and P100s, which are assigned automatically \cite{Colab2021}. The compute capability score lies depending on the GPU between 3.7 and 7.5 \cite{Nvidia}. So Google Colab matches the second requirement, but not necessarily the first one. Also much effort would have had to be invested into converting the project into a Jupyter Notebook. 
+On the other hand the Google Cloud Platform, especially the AI Platform offers many performant GPUs to choose from, but it can quickly become very expensive, as the following example calculation shows \cite{GCP2021}. 
 
-The calculation was done with the Google Cloud Pricing Calculator \cite{googleeditorGoogleCloudPlatformPreisrechner} and following parameters:
+The calculation was done with the Google Cloud Pricing Calculator \cite{PreisRechner2021} and following parameters:
 \begin{itemize}
 	\item Region: United States
 	\item Selected tier: BASIC\_GPU
@@ -267,7 +266,7 @@ Based on the above findings the possibility of cloud training is not realized an
 \subsubsection{Local Training Setup}
 \label{ch:approachBg}
 
-As mentioned in the previous chapter our local training setup is based on the GPU Nvidia GTX 1080 with a comuting power of 6.1 out of 10. Furthermore we use CUDA (version 11.2.1) and the cuDNN library (version 8.1.0). In cooperation with TensorFlow (version 2.4.1) it is ensured that the local hardware is used optimally for the training process. The performance during training heavily depends on the progress a model has made so far. Pre-training usually takes longer as the full 400 steps are normally taken per episode which results in a performance of 1k episodes in nine hours. At the beginning of the main training phase, especially when the amount of exploration is still high and the model did not converge yet, 1k episodes can trained in less then one hour (approx. 35 minutes).  
+As mentioned in the previous chapter the local training setup is based on the GPU Nvidia GTX 1080 with a comuting power of 6.1 out of 10. Furthermore CUDA (version 11.2.1) and the cuDNN library (version 8.1.0) is used. In cooperation with TensorFlow (version 2.4.1) it is ensured that the local hardware is used optimally for the training process. The performance during training heavily depends on the progress a model has made so far. Pre-training usually takes longer as the full 400 steps are normally taken per episode which results in a performance of 1k episodes in nine hours. At the beginning of the main training phase, especially when the amount of exploration is still high and the model did not converge yet, 1k episodes can trained in less then one hour (approx. 35 minutes).  
 
 \subsubsection{Training Visualization}
 \label{ch:approachBh}

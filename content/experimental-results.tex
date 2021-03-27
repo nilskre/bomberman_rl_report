@@ -65,7 +65,7 @@ Also, the initial exploration factor $\epsilon$ was increased from 0.3 to 1 to c
 
 Having done these changes results in a far lower training loss curve which converges to an average episode loss of 250 per five episodes. Also the reward curve seems to converge at an average loss of about minus four. Nevertheless, this average reward still is not what was expected and when looking at the actual agent behavior, the agent always chooses to wait. A possible explanation for this might be that the agent tries to avoid future punishments by just waiting until it gets killed by another player. 
 
-To escape the bad local optima and the small degree between rewards and punishments, the reward function was first slightly adjusted by increasing the magnitue of each reward by 100 and therefore breaking the normalization. This results in the two following training curves:
+To escape the bad local optimum and the small degree between rewards and punishments, the reward function was first slightly adjusted by increasing the magnitue of each reward by 100 and therefore breaking the normalization. This results in the two following training curves:
 
 \begin{figure}[ht]
 	\centering
@@ -84,7 +84,7 @@ To escape the bad local optima and the small degree between rewards and punishme
 	\end{subfigure}
 \end{figure}
 
-As one can see this negatively impacts the training behavior exponentially and got discarded right away. In the next try the adaption of the rewards were discarded again, the exploration factor $\epsilon$ remained at a start value of one and the maximum size of the experience replay buffer was left at 32.768. We increased the amount of episodes to train during the main training to 30k. This equals three generations which should show at least some improvements during the training process as in \cite{Kormelink2018}, especially when increasing the exploration. The following training curves were experienced: 
+As one can see this negatively impacts the training behavior exponentially and got discarded right away. In the next try the adaption of the rewards were discarded again, the exploration factor $\epsilon$ remained at a start value of one and the maximum size of the experience replay buffer was left at 32.768. The amount of episodes to train during the main training was increased to 30k. This equals three generations which should show at least some improvements during the training process as in \cite{Kormelink2018}, especially when increasing the exploration. The following training curves were experienced: 
 
 \begin{figure}[ht]
 	\centering
@@ -114,9 +114,9 @@ When looking at the smoothed loss (see \autoref{fig:main-loss-smoothed-4}) one c
 	\end{subfigure}
 \end{figure}
 
-Having higher exploration did not fix the problem of ecaping the bad local optima of the agent waiting until it gets killed. Instead it just seems to extend the training process as the loss is even higher than before. The course of the average reward curve (see \autoref{fig:main-reward-smoothed-4}) equals to the original one, but now after 18k episodes the average reward curve falls again. This development also seems to be independent from the exploration rate development (see \autoref{fig:epsilon-4}). 
+Having higher exploration did not fix the problem of ecaping the bad local optimum of the agent waiting until it gets killed. Instead it just seems to extend the training process as the loss is even higher than before. The course of the average reward curve (see \autoref{fig:main-reward-smoothed-4}) equals to the original one, but now after 18k episodes the average reward curve falls again. This development also seems to be independent from the exploration rate development (see \autoref{fig:epsilon-4}). 
 
-To summarize neither changing the magnitude of the rewards, nor increasing the exploration rate helped to escape the bad local optima. Only increasing the training episodes seems to very slowly decrease the loss which might result in another optima in future. But as such training takes a long time it was decided to not pursue further in the limited amout of time. 
+To summarize neither changing the magnitude of the rewards, nor increasing the exploration rate helped to escape the bad local optimum. Only increasing the training episodes seems to very slowly decrease the loss which might result in another optimum in the future. But as such training takes a long time it was decided to not pursue further in the limited amout of time. 
 
 At this point the Bomberman scenario was simplified to only have one agent learning how to collect coins. Fortunately, this was achievable in the limited amount of time. 
 
