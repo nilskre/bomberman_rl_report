@@ -1,12 +1,14 @@
 \section{Fundamentals and Related Work} \label{fundamentals_related_work}
 
-Q-learning is a known off-policy and model-free approach to train an agent based on temporal difference in an environment that can be modeled as a Markov Decision Process (MDP). An agent therefore does not necessarily use the policy it is trained for and does not know the transition probabilities and rewards in the MDP beforehand. \autoref{QLearning} shows the iterative update formula for the Q-values that an online model uses to choose the right action \cite{Geron2018}.
+Q-learning is a known off-policy and model-free approach to train an agent based on temporal difference in an environment that can be modeled as a Markov Decision Process (MDP). An agent therefore does not necessarily use the policy it is trained for and does not know the transition probabilities and rewards in the MDP beforehand. \autoref{QLearning} shows the iterative update formula for the Q-values that an online model uses to choose the right action. \cite{Geron2018}
 
 \begin{equation} \label{QLearning}
 	Q_{k+1}(s,a) = (1-\alpha) Q_k(s,a) + \alpha(r + \gamma \max_{a'} Q_k(s',a')) 
 \end{equation}
 
-The problem with conventional Q-learning is that in most of the cases the state dimension is far too high to explore and model the MDP entirely in foreseeable future. To deal with this problem the Q-values need to be approximated using a regression model. Deep neural networks have proven to be highly applicable for this task, which leads to the term of \textit{Deep Q-learning} and respectively \textit{Deep Q-Networks} (DQN) for such network architectures. DQNs use the vectorized numerical state as its input and outputs the predicted Q-values. It learns through backpropagating the temporal difference error over each step for a single neuron. Note that for the Q-learning algorithm a backpropagation is done after every step of the simulation. To avoid temporal correlation between succeeding experiences an experience replay buffer is used to randomly sample a training batch in each step. Also rare experiences will be used more frequently to update the model parameters using this approach. In the following papers regarding DQN architectures shall be introduced as well as papers dealing with the bomberman environment for Reinforcement Learning. 
+The problem with conventional Q-learning is that in most of the cases the state dimension is far too high to explore and model the MDP entirely in foreseeable future. To deal with this problem the Q-values need to be approximated using a regression model. Deep neural networks have proven to be highly applicable for this task, which leads to the term of \textit{Deep Q-learning} and respectively \textit{Deep Q-Networks} (DQN) for such network architectures. DQNs use the vectorized numerical state as its input and outputs the predicted Q-values. It learns through backpropagating the temporal difference error over each step for a single neuron. Note that for the Q-learning algorithm a backpropagation is done after every step of the simulation. To avoid temporal correlation between succeeding experiences an experience replay buffer is used to randomly sample a training batch in each step. Also rare experiences will be used more frequently to update the model parameters using this approach. \cite{Geron2018}
+
+In the following papers regarding DQN architectures shall be introduced as well as papers dealing with the bomberman environment for Reinforcement Learning. 
 
 Hasselt, Guez and Silver \cite{vanHasselt2015} tackle the problem that the $max$ operator in \autoref{QLearning} often leads to overoptimistic value estimates as the DQN uses the same Q-values to both select and evaluate an action. They therefore propose the iterative update formula (\ref{DoubleQLearning}).
 
@@ -21,14 +23,14 @@ Another optimization was introduced by Wang et al. in \cite{Wang2016}. They chan
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{figures/duelingDQN.PNG}
-	\caption{Architecture of a normal DQN (top) compared to a dueling DQN (bottom)}
+	\caption{Architecture of a normal DQN (top) compared to a dueling DQN (bottom) \cite{Wang2016}}
 	\label{fig:duelingDQN}
 \end{figure}
 
 The state-dependent action advantage function is defined as
 
 \begin{equation} \label{advfunction}
-	A^{\pi}(s,a) = A^{\pi}(s,a) - V^{\pi}(s)
+	A^{\pi}(s,a) = Q^{\pi}(s,a) - V^{\pi}(s)
 \end{equation}
 
 and measures the importance of each action. The special aggregating layer uses \autoref{aggregation} to estimate the Q-values while also tackling the issue of identifiability. 

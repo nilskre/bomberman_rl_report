@@ -78,9 +78,8 @@ When choosing the right method for the exploration-exploitation tradeoff, \cite{
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{figures/exploration.PNG}
-	\caption{Comparison of different exploration methods}
+	\caption{Comparison of different exploration methods \cite{Kormelink2018}}
 	\label{fig:exploration}
-	\cite{Kormelink2018}
 \end{figure}
 
 In the long run, Max Boltzmann performs best with 
@@ -111,6 +110,7 @@ Furthermore, a prioritized experience replay buffer was utilized to speed up the
 	\includegraphics[width=0.6\linewidth]{figures/sumtree.PNG}
 	\caption{Stratified sampling of priorities from a SumTree}
 	\label{fig:sumtree}
+	\cite{own representation}
 \end{figure}
 
 \autoref{fig:sumtree} illustrates the process of sampling priorities with a batch size of four. One can see that the priority with magnitude ten will be sampled every time as it is the only priority within the sum segment. One can also see that in case the prioritized experience replay buffer is not filled, zeros might be sampled. To counteract this, the amount of sum segments to divide the SumTree into is the batch size plus one. Adding values to the SumTree has the complexity O(1) whereas subsequent updating the SumTree has the complexity O(log n). 
@@ -234,11 +234,9 @@ Especially Nvidia is known in the area of GPUs for it's Compute Unified Device A
 		Suggested Power Supply Unit & 700 & 600 & 350 & 600 & 450 \\
 		Compute capability & 3.7 & 6.0 & 7.5 & 7.0 & 6.1 \\ 
 	\end{tabular}
-	\captionof{table}{GPU comparison}
+	\captionof{table}{GPU comparison \cite{Nvidia, TechPowerUp}}
 	\label{table:hardware}
-	Based on \cite{TechPowerUp} and \cite{Nvidia}
 \end{center}
-
 
 Based on these basic information regarding training hardware and the associated findings, for the purposes of this project two requirements exist:
 \begin{enumerate}
