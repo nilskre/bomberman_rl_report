@@ -18,11 +18,10 @@ To conclude the difficulties faced during training the agent using a dueling dou
 
 Several improvements for future versions of the agent were collected. First the feature vector could be restricted to behavioral features instead of pure state features, which means pre-calculating certain tasks and only encode movement information and special game fields as features. This simplifies the learning process by not only minimizing the feature dimension but also by increasing the entropy of the features and therefore the degree of learning capability. Another way to alternate the feature vector is to use the actual encoded image of the playing field and giving it to a preceding convolutional neural network that is capable of recognizing certain patterns. Therefore similarities between states could be recognized and be encoded as the same feature vector that is then given to the normal dueling double DQN. This could once again minimize the feature space to important features only and therefore speed up the training process. 
 
-Next the reward function could be extended by dynamically adjusting certain rewards during the progress of a game like increasing the movement reward towards opponents. This has not become important so far as the agent does not reach the late game phase in the original environment. 
+Next the reward function could be extended by dynamically adjusting certain rewards during the progress of a game like increasing the movement reward towards opponents. This has not become important so far as the agent does not reach the late game phase. 
 
 This could be accomplished by utilizing count-based or curiosity-driven exploration to achieve a better exploration-exploitation trade-off or by pursueing more empirical experiments with different reward functions to escape the bad local optimum. 
 
 Last but not least, the episodes to train could be increased to evaluate whether the loss in \autoref{fig:main-loss-smoothed-4} would converge to zero and the reward in \autoref{fig:main-reward-smoothed-4} would actually start to increase again and therefore escape the bad local optimum of the agent always waiting. 
 
-
-
+The framework provided a flawless environment for the project to which no further suggestions for improvement are to be made.

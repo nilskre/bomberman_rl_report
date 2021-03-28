@@ -116,11 +116,6 @@ When looking at the smoothed loss (see \autoref{fig:main-loss-smoothed-4}) one c
 
 Having higher exploration did not fix the problem of ecaping the bad local optimum of the agent waiting until it gets killed. Instead it just seems to extend the training process as the loss is even higher than before. The course of the average reward curve (see \autoref{fig:main-reward-smoothed-4}) equals to the original one, but now after 18k episodes the average reward curve falls again. This development also seems to be independent from the exploration rate development (see \autoref{fig:epsilon-4}) that now reaches its lower bound far later after 20.000 episodes. 
 
-To summarize neither changing the magnitude of the rewards, nor increasing the exploration rate helped to escape the bad local optimum. Only increasing the training episodes seems to very slowly decrease the loss which might result in another optimum in the future as one would expect when looking at \autoref{fig:exploration}. The 30.000 episode training mark was reached after 17,67 hours which means another approx. 41 hour training to reach the 10 generations mark. As such a training takes its time and does not guarantee its success, it was decided to not pursue this further in the limited amount of time. 
-
-At this point the Bomberman scenario was simplified to only have one agent learning how to collect coins. Fortunately, this was achievable in the limited amount of time. 
-
-[Training curve + pictures]
-
+To summarize neither changing the magnitude of the rewards, nor increasing the exploration rate helped to escape the bad local optimum. Only increasing the training episodes seems to very slowly decrease the loss which might result in another optimum in the future as one would expect when looking at \autoref{fig:exploration}. The 30.000 episode training mark was reached after 17,67 hours which means another approx. 41 hour training to reach the 10 generations mark. As such a training takes its time and does not guarantee its success, it was decided to not pursue this further in the given amount of time. 
 
 
