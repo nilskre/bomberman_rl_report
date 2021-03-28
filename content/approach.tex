@@ -141,20 +141,21 @@ Rewards are given when different kind of actions are taken or different kind of 
 \begin{table}[hbt!]
 	\caption{Reward function}
 	\label{tab:rewards}
-	\begin{tabular}{|p{0.6\textwidth}|p{0.3\textwidth}|}
+	\begin{tabular}{p{0.7\textwidth}|p{0.2\textwidth}}
+		\textbf{Reward} & \textbf{Amount} \\
 		\hline
-		\textbf{Reward} & \textbf{Amount} \\ \hline
-		Movement in/out of danger zone & -0.3/+0.3 \\ \hline
-		Movement towards/away from nearest coin & +0.1/-0.1 \\ \hline
-		Movement towards/away from nearest opponent & +0.05/-0.05 \\ \hline
-		WAITED & -0.2 \\ \hline
-		INVALID\_ACTION & -1 \\ \hline
-		BOMB\_DROPPED & 0.4 \\ \hline
-		CRATE\_DESTROYED & 0.7 \\ \hline
-		COIN\_COLLECTED & 0.2 \\ \hline
-		KILLED\_OPPONENT & 1 \\ \hline
-		KILLED\_SELF & -1 \\ \hline
-		GOT\_KILLED & -1 \\ \hline
+		\hline
+		Movement in/out of danger zone & -0.3/+0.3 \\
+		Movement towards/away from nearest coin & +0.1/-0.1 \\
+		Movement towards/away from nearest opponent & +0.05/-0.05 \\
+		WAITED & -0.2 \\
+		INVALID\_ACTION & -1 \\
+		BOMB\_DROPPED & 0.4 \\
+		CRATE\_DESTROYED & 0.7 \\
+		COIN\_COLLECTED & 0.2 \\
+		KILLED\_OPPONENT & 1 \\
+		KILLED\_SELF & -1 \\
+		GOT\_KILLED & -1 \\
 	\end{tabular}
 \end{table}
 
@@ -178,28 +179,33 @@ One could also think of introducing a reward schedule that increases certain rew
 \begin{table}[hbt!]
 	\caption{Hyperparameters}
 	\label{tab:hyperparameters}
-	\begin{tabular}{|p{0.6\textwidth}|p{0.3\textwidth}|}
+	\begin{tabular}{p{0.6\textwidth}|p{0.3\textwidth}}
+		\textbf{Hyperparameter} & \textbf{Value} \\
 		\hline
-		\textbf{Hyperparameter} & \textbf{Value} \\ \hline
-		Dense layer dimension & 128 \\ \hline
 		\hline
-		Activation function & ELU \\ \hline
-		Loss function & Huber \\ \hline
-		Learning rate & 0.01 \\ \hline
+		Dense layer dimension & 128 \\
 		\hline
-		$\alpha$ & 0.65 \\ \hline
-		$\beta$ & 0.4 \\ \hline
-		$\beta$ increment & 0.00001 \\ \hline
-		temporal difference $\epsilon$ bias & 0.01 \\ \hline
 		\hline
-		PER buffer min size & 8.192 \\ \hline
-		PER buffer max size & 65.536 \\ \hline
-		Batch size & 64 \\ \hline
+		Activation function & ELU \\
+		Loss function & Huber \\
+		Learning rate & 0.01 \\
 		\hline
-		$\gamma$ & 0.95 \\ \hline
-		$\epsilon$ start & 0.3 \\ \hline
-		$\epsilon$ end & 0.16 \\ \hline
-		$\epsilon$ decay factor & 0.99999 \\ \hline
+		\hline
+		$\alpha$ & 0.65 \\
+		$\beta$ & 0.4 \\
+		$\beta$ increment & 0.00001 \\
+		temporal difference $\epsilon$ bias & 0.01 \\
+		\hline
+		\hline
+		PER buffer min size & 8.192 \\
+		PER buffer max size & 65.536 \\
+		Batch size & 64 \\
+		\hline
+		\hline
+		$\gamma$ & 0.95 \\
+		$\epsilon$ start & 0.3 \\
+		$\epsilon$ end & 0.16 \\
+		$\epsilon$ decay factor & 0.99999 \\
 	\end{tabular}
 \end{table}
 
@@ -224,12 +230,13 @@ The prospects of success were shown by Lawrence et al. \cite{Lawrence2017Compari
 Especially Nvidia is known in the area of GPUs for it's Compute Unified Device Ar\-chi\-tec\-tu\-re (CUDA). It provides a programming model and parallel computing platform for outsourcing processes to the GPU. In the area of Deep Learning there is the supplementary library called Nvidia CUDA Deep Neural Network (cuDNN), which provides hardware optimized routines for Deep Learning tasks.
 
 \begin{center}
-	\begin{tabular}[H]{l|c|c|c|c|c|}
+	\begin{tabular}[H]{l|c|c|c|c|c}
 		& K80 & P100 & T4 & V100 & GTX 1080 \\
+		\hline
 		\hline
 		CUDA Cores & 2496 & 3584 & 2560 & 5120 & 2560 \\
 		Tensor Cores & / & / & 320 & 640 & / \\
-		TeraFLOPS (Single Precision) & 4,113 & 9,526 & 8,141 & 14,13 & 9,784  \\
+		TeraFLOPS (Single Precision) & 4,113 & 9,526 & 8,141 & 14,13 & 9,784 \\
 		Memory Bandwidth (GB/sec) & 240,6 & 732,2 & 320 & 897 & 345,6 \\
 		Suggested Power Supply Unit & 700 & 600 & 350 & 600 & 450 \\
 		Compute capability & 3.7 & 6.0 & 7.5 & 7.0 & 6.1 \\ 
@@ -272,4 +279,4 @@ As mentioned in the previous chapter the local training setup is based on the GP
 
 To visualize the training process TensorBoard is utilized. Every five episodes the TensorBoard is updated with the average of the last five total rewards gathered over each episode, the average of the last five total episode losses, the current exploration factor $\epsilon$ and the current learning rate. 
 
-
+\newpage
