@@ -8,15 +8,15 @@ Q-learning is a known off-policy and model-free approach to train an agent based
 
 The problem with conventional Q-learning is that in most of the cases the state dimension is far too high to explore and model the MDP entirely in foreseeable future. To deal with this problem the Q-values need to be approximated using a regression model. Deep neural networks have proven to be highly applicable for this task, which leads to the term of \textit{Deep Q-learning} and respectively \textit{Deep Q-Networks} (DQN) for such network architectures. DQNs use the vectorized numerical state as its input and outputs the predicted Q-values. It learns through backpropagating the temporal difference error over each step for a single neuron. Note that for the Q-learning algorithm a backpropagation is done after every step of the simulation. To avoid temporal correlation between succeeding experiences an experience replay buffer is used to randomly sample a training batch in each step. Also rare experiences will be used more frequently to update the model parameters using this approach. In the following papers regarding DQN architectures shall be introduced as well as papers dealing with the bomberman environment for Reinforcement Learning. 
 
-Paper \cite{vanHasselt2015} tackles the problem that the $max$ operator in \autoref{QLearning} often leads to overoptimistic value estimates as the DQN uses the same Q-values to both select and evaluate an action. It therefore changes the iterative update formula to \ref{DoubleQLearning}.
+Hasselt, Guez and Silver \cite{vanHasselt2015} tackle the problem that the $max$ operator in \autoref{QLearning} often leads to overoptimistic value estimates as the DQN uses the same Q-values to both select and evaluate an action. They therefore propose the iterative update formula (\ref{DoubleQLearning}).
 
 \begin{equation} \label{DoubleQLearning}
-	Q_{k+1}(s,a) = (1-\alpha) Q_k(s,a) + \alpha(r + \gamma Q'_k(s', arg\max_{a'} Q_k(s',a'))) 
+	Q_{k+1}(s,a) = (1-\alpha) Q_k(s,a) + \alpha(r + \gamma Q'_k(s', argmax_{a'} Q_k(s',a'))) 
 \end{equation}
 
-Now a target DQN is used to separate the determination of the greedy policy, which is still done by the online network, from the Q-value estimation. Using this double DQN approach results in less overestimated Q-values and therefore better policies by more accurate Q-value estimates. It also makes the learning process more stable and reliable. The weights are copied from the online network to the target network after a fixed amount of episodes.
+Now a target DQN is used to separate the determination of the greedy policy, which is still done by the online network, from the Q-value estimation. This double DQN approach results in less overestimated Q-values and therefore better policies by more accurate Q-value estimates. It also makes the learning process more stable and reliable. The weights are copied from the online network to the target network after a fixed amount of episodes.
 
-Another optimization was introduced in paper \cite{Wang2016}. It changes the architecture of the DQN by splitting it into two separate value streams. One stream estimates the state value function and the other one the state-dependent action advantage function. Both streams are then combined again using a special aggregating layer to produce an estimate of the Q-values (see \autoref{fig:duelingDQN}).  
+Another optimization was introduced by Wang et al. in \cite{Wang2016}. They change the architecture of the DQN by splitting it into two separate value streams. One stream estimates the state value function and the other one the state-dependent action advantage function. Both streams are then combined again using a special aggregating layer to produce an estimate of the Q-values (see \autoref{fig:duelingDQN}).  
 
 \begin{figure}[ht]
 	\centering
@@ -69,7 +69,7 @@ to counter a bias towards high prioritized experiences introduced using the prio
 
 There are several other improvements mentioned in the rainbow paper \cite{Hessel2017} like multi-step learning, distributional Reinforcement Learning and noisy nets, but these are out of the scope for this small research project. 
 
-Other papers were found that explicitly use DQNs within the Bomberman environment. One of them being \cite{Kormelink2018} which introduces two novel exploration strategies, Error-Driven-$\epsilon$ and Interval-Q, and compares them to conventional exploration strategies like Diminishing $\epsilon$-Greedy and Max-Boltzmann, whereas Max-Boltzmann with decreasing temperature parameter still performs best in the long run by empirical evaluation. Nevertheless Error-Driven-$\epsilon$, despite being less stable, learns faster than all other exploration techniques. The paper also gives an approach to encode the state. Therefore, the playing field is encoded by four matrices, which are computed as:
+Other papers were found that explicitly use DQNs within the Bomberman environment. Kormelink, Drugan and Wiering \cite{Kormelink2018} introduce two novel exploration strategies, Error-Driven-$\epsilon$ and Interval-Q, and compares them to conventional exploration strategies like Diminishing $\epsilon$-Greedy and Max-Boltzmann, whereas Max-Boltzmann with decreasing temperature parameter still performs best in the long run by empirical evaluation. Nevertheless Error-Driven-$\epsilon$, despite being less stable, learns faster than all other exploration techniques. The paper also gives an approach to encode the state. Therefore, the playing field is encoded by four matrices, which are computed as:
 
 \begin{itemize}
 	\item Free, breakable and obstructed cells are encoded as either 1, 0 or -1,
@@ -80,6 +80,6 @@ Other papers were found that explicitly use DQNs within the Bomberman environmen
 
 The paper also gives valuable insights into the configuration of hyperparameters, rewards and the amount of training needed until convergence, which is about 100 generations à 10.000 episodes. 
 
-\cite{Franca2019} uses an imitation-based learner that trains its model with the actor-critic proximal-policy optimization method in the Bomberman environment. Here insights about how rewards need to be chosen and which state representation to choose can also be derived. 
+Franca, Paes and Clua \cite{Franca2019} use an imitation-based learner that trains its model with the actor-critic proximal-policy optimization method in the Bomberman environment. Here insights about how rewards need to be chosen and which state representation to choose can also be derived. 
 
 Bomberman seems to provide a perfect environment to try out different Reinforcement Learning methods, which is why \cite{daCruzLopes2016} provided an artificial intelligence platform around Bomberman including several associated intelligent agents and empirical experiments. 
